@@ -8,7 +8,7 @@
 3. pkprocess 디렉토리에서 `$python setup_cy.py build_ext --inplace` 명령을 실행해서 Cython 모듈을 설치하세요.
 
 ## 예제
-1. [Marine data]() (Marmousi data)
-2. [Land data]()
+1. [Marine data](https://github.com/pkgpl/IPythonProcessing/blob/master/Example_Marine.ipynb) (Marmousi data)
+2. [Land data](https://github.com/pkgpl/IPythonProcessing/blob/master/Example_Land.ipynb)
 
 * 예제에 사용한 데이터 파일은 여기에서 제공하지 않습니다. 필요하신 분은 메일 주세요.
