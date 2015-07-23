@@ -1,0 +1,9 @@
+*.so
+*.c
+*.pyc
+data/*
+*.sd
+*.su
+.ipynb_checkpoints/
+*.tif
+*.eps
