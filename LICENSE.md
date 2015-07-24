@@ -1,6 +1,8 @@
                     GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 
+* Some codes in the package are derived from GPL-licensed MATLAB packages.
+
  Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
  Everyone is permitted to copy and distribute verbatim copies
  of this license document, but changing it is not allowed.
