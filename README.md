@@ -12,8 +12,9 @@
 
 ## 예제
 
-1. [Marine data](https://github.com/pkgpl/IPythonProcessing/blob/master/Example_Marine.ipynb) (Marmousi data)
-2. [Land data](https://github.com/pkgpl/IPythonProcessing/blob/master/Example_Land.ipynb)
+1. [Land data](http://nbviewer.ipython.org/github/pkgpl/IPythonProcessing/blob/master/Example_Land.ipynb)
+2. [Marine data](http://nbviewer.ipython.org/github/pkgpl/IPythonProcessing/blob/master/Example_Marine.ipynb) (Marmousi data)
+3. [Marine data - Kirchhoff migration](http://nbviewer.ipython.org/github/pkgpl/IPythonProcessing/blob/master/Kirchhoff_mig.ipynb)
 
 * 예제 문서는 IPython Notebook version 3.0 이상을 기준으로 만들었습니다. 예제에 사용한 데이터 파일은 여기에서 제공하지 않습니다. 필요하신 분은 메일 주세요.
 
