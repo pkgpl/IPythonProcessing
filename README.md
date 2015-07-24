@@ -18,7 +18,7 @@
 
 1. [Land data](http://nbviewer.ipython.org/github/pkgpl/IPythonProcessing/blob/master/Example_Land.ipynb) (Notebook 용량: 18 MB)
 2. [Marine data](http://nbviewer.ipython.org/github/pkgpl/IPythonProcessing/blob/master/Example_Marine.ipynb) (Marmousi data, Notebook 용량: 10 MB)
-3. [Marine data](http://nbviewer.ipython.org/github/pkgpl/IPythonProcessing/blob/master/Kirchhoff_mig.ipynb)(Kirchhoff migration, Notebook 용량: 1 MB 이하)
+3. [Marine data](http://nbviewer.ipython.org/github/pkgpl/IPythonProcessing/blob/master/Kirchhoff_mig.ipynb) (Kirchhoff migration, Notebook 용량: 1 MB 이하)
 
 * 예제 문서는 IPython Notebook version 3.0 이상을 기준으로 만들었습니다. 예제에 사용한 데이터 파일(Land data: 3.5 MB, Marmousi data: 69 MB, Marmousi velocity model: 1 MB 이하)은 여기에서 제공하지 않습니다. 필요하신 분은 메일 주세요.
 
