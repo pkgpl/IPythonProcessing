@@ -5,7 +5,7 @@ import pkprocess as pk
 
 UNIT="m/s"
 
-CYTHON=True
+from __init__ import CYTHON
 if CYTHON:
 	from velan_cy import velan,nmo
 else:
