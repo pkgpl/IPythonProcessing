@@ -137,7 +137,7 @@ class SeismicTrace:
 			print(log)
 		if nmo:
 			print("nmo picks")
-			print self.nmo_picks
+			print(self.nmo_picks)
 	
 	def logs(self):
 		return list(self.log)

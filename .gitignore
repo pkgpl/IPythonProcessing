@@ -1,5 +1,6 @@
 *.so
 *.c
+*.o
 *.pyc
 data/*
 *.sd
@@ -7,3 +8,4 @@ data/*
 .ipynb_checkpoints/
 *.tif
 *.eps
+build/*

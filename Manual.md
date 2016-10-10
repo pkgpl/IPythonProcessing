@@ -50,6 +50,9 @@
 - 송수신기 좌표 보기: `stacking_chart(sd)`
 - Autocorrelation map: `auto_correlation_map(sd[, double max_lag=0.2])`
 
+- 속도모델 그리기: `plot_vel(vel, h[, figsize=[15,4], unit="km/s", tick=np.arange(1.5,6,1)])`
+- 구조보정 결과 그리기: `plot_mig(mig, h[, figsize=[15,4]])`
+
 ## Processing
 
 - key 값을 기준으로 정렬(list_of_keywords에서 부호: (+)오름차순, (-)내림차순  ex. ["+fldr","-offset"])(susort): `sorted_sd = trace_sort(sd, list_of_keywords)`

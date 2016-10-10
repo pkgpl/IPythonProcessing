@@ -1,7 +1,7 @@
 import cython
 import numpy as np
 cimport numpy as np
-import pkbase as pk
+from . import pkbase as pk
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
@@ -139,7 +139,7 @@ def scr_static(self,int cmp_start,int cmp_end,double maxlags):
 	cdef np.ndarray[int] cdp=pk.get_key(self,'cdp')
 	cdef int cmpnum
 	for cmpnum in range(cmp_start,cmp_end+1):
-		#print "cmp num=",cmpnum
+		#print("cmp num=",cmpnum)
 		su1=pk.window(self,'cdp',cmpnum)
 		Da=su1.data
 		# first stacked trace

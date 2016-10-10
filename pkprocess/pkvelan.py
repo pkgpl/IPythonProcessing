@@ -1,15 +1,16 @@
 from numpy import *
 from matplotlib.pyplot import *
 import pickle
-import pkprocess as pk
+#import pkprocess as pk
+from . import pkbase as pk
 
 UNIT="m/s"
 
 from __init__ import CYTHON
 if CYTHON:
-	from velan_cy import velan,nmo
+	from .velan_cy import velan,nmo
 else:
-	from velan import velan,nmo
+	from .velan import velan,nmo
 
 class Picker:
 	def __init__(self,Da,dt,S,tau,v,cmpnum,h,max_stretch):
@@ -43,7 +44,7 @@ class Picker:
 		self.ax_right=self.fig.add_subplot(1,3,3)
 		self.plot_wigb_sub(self.ax_right)
 		show()
-		print 'num picks=',len(self.vstack)
+		print('num picks=',len(self.vstack))
 		return self.vstack,self.tstack
 
 	def redraw(self):
@@ -107,8 +108,8 @@ class Picker:
 			self.vstack=self.vstack[indx]
 			self.ptstack=self.ptstack[indx]
 			self.pvstack=self.pvstack[indx]
-			print 'xdata=%s, ydata=%s, npick=%s'%(event.xdata, event.ydata, len(self.vstack))
-			#print 'x=%s, y=%s'%(event.x,event.y)
+			print('xdata=%s, ydata=%s, npick=%s'%(event.xdata, event.ydata, len(self.vstack)))
+			#print('x=%s, y=%s'%(event.x,event.y))
 			if len(self.vstack)>0:
 				self.Dnmo,M,ti,vi=nmo(self.Da,self.dt,self.offset.astype(np.float64),self.tstack,self.vstack,float(self.max_stretch))
 		if event.button==3: # right click to remove

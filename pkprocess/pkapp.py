@@ -1,21 +1,21 @@
 import numpy as np
-from pkbase import *
+from .pkbase import *
 
 def triang(L):
 	# generate triangle
 	w=np.zeros(L)
 	if L%2==0: # even L
-		for i in range(L/2):
+		for i in range(int(L/2)):
 			n=i+1
 			w[i]=(2.*n-1.)/L
-		for i in range(L/2,L):
+		for i in range(int(L/2),L):
 			n=i+1
 			w[i]=2.-(2.*n-1.)/L
 	else: # odd L
-		for i in range((L+1)/2):
+		for i in range(int((L+1)/2)):
 			n=i+1
 			w[i]=2.*n/(L+1.)
-		for i in range((L+1)/2,L):
+		for i in range(int((L+1)/2),L):
 			n=i+1
 			w[i]=2.-2.*n/(L+1.)
 	return w
@@ -141,7 +141,7 @@ def kirchhoff(sd,h,times,tdelay):
 
 	for ishot,gather in enumerate(gathers):
 		if ishot %10 ==0:
-			print ishot,nshot
+			print(ishot,nshot)
 		sx=get_key(gather,"sx")[0]
 		gx=np.array(get_key(gather,"gx"))
 		isx=int(sx/h_in_meter)
@@ -170,7 +170,7 @@ def rmsvel(sd):
 	at=np.array(range(ns))*dt
 	dic=sd.nmo_picks
 	if len(dic)==0:
-		print "Please run this after velocity analysis!!"
+		print("Please run this after velocity analysis!!")
 		return
 	ncmp=len(dic.keys())
 	v1=np.empty((ns,ncmp))

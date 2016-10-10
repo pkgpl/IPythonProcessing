@@ -1,11 +1,11 @@
-from pkbase import *
-from pkplot import *
-from pkapp  import *
+from .pkbase import *
+from .pkplot import *
+from .pkapp  import *
 
-CYTHON=True
+CYTHON=False
 if CYTHON:
-	from corr_cy import *
-	from traveltime_cy import traveltime
+	from .corr_cy import *
+	from .traveltime_cy import traveltime
 else:
-	from corr import *
+	from .corr import *
 

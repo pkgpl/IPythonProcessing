@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import pkbase as pk
+from . import pkbase as pk
 
 def perc_clip_val(data,perc=100):
 	# return clipping value by percent clip, does not apply clipping
@@ -146,7 +146,7 @@ def specfx(self,perc=100,cmap="jet",subplot=False):
 	# cmap='jet': matplotlib colormap
 	data_f = np.fft.fft(perc_clip(self.data,perc),axis=1).T
 	nt,nx=data_f.shape
-	nf=nt/2+1
+	nf=int(nt/2)+1
 	dt=pk.get_dt(self)
 	fmax=0.5/dt
 	print("dt=%s, fmax=%s"%(dt,fmax))
@@ -171,11 +171,11 @@ def specfk(self,dx=0,perc=100,cmap="jet",subplot=False):
 		dx=np.abs(offset[1]-offset[0])/1000. # in km if offset is in meter
 		if dx == 0:
 			dx=1
-	nf=nt/2+1
+	nf=int(nt/2)+1
 	dt=pk.get_dt(self)
 	fmax=0.5/dt
 	print("dt=%s, fmax=%s"%(dt,fmax))
-	nk=nx/2+1
+	nk=int(nx/2)+1
 	kmax=0.5/dx
 	print("dx=%s, kmax=%s"%(dx,kmax))
 
@@ -205,7 +205,7 @@ def seis_env_dB(trc,trcgain,tnum=-1):
 		gtrc=Dg[tnum,:]
 		yl='trace %d'%tnum
 	else:
-		print 'tnum should be smaller than %d'%nx
+		print('tnum should be smaller than %d'%nx)
 		return
 
 	import scipy.signal

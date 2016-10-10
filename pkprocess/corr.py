@@ -1,5 +1,5 @@
 import numpy as np
-import pkbase as pk
+from . import pkbase as pk
 
 def autocorr(x):
 	# auto correlation
@@ -104,7 +104,7 @@ def scr_static(self,cmp_start,cmp_end,maxlags):
 	Dstatic=np.zeros_like(self.data)
 	cdp=pk.get_key(self,'cdp')
 	for cmpnum in range(cmp_start,cmp_end+1):
-		print "cmp num=",cmpnum
+		print("cmp num=",cmpnum)
 		su1=pk.window(self,'cdp',cmpnum)
 		Da=su1.data
 		# first stacked trace
