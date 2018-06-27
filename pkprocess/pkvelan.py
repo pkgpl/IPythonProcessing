@@ -7,11 +7,6 @@ from . import pkbase as pk
 
 UNIT="m/s"
 
-#from __init__ import CYTHON
-#if CYTHON:
-#	from .velan_cy import velan,nmo
-#else:
-#	from .velan import velan,nmo
 from .velan import velan,nmo
 
 class Picker:

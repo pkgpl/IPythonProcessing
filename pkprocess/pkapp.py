@@ -156,7 +156,6 @@ def kirchhoff1(image,gather,times,isx,igx,dt,tdelay):
 
 @jit
 def kirchhoff(sd,h,times,tdelay):
-	#import kirchhoff_cy
 	nx,nz=times[0].shape
 	image=np.zeros((nx,nz))
 	nt=get_ns(sd)
@@ -174,7 +173,6 @@ def kirchhoff(sd,h,times,tdelay):
 		isx=int(sx/h_in_meter)
 		igx=(gx/h_in_meter).astype(np.int32)
 		image=kirchhoff1(image,gather.data,times,isx,igx,dt,tdelay)
-		#image=kirchhoff_cy.kirchhoff1(image,gather.data,times,isx,igx,dt,tdelay)
 	return image
 
 @jit
