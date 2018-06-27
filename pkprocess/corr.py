@@ -1,11 +1,15 @@
 import numpy as np
+from numba import jit
+import scipy.linalg
 from . import pkbase as pk
 
+@jit
 def autocorr(x):
 	# auto correlation
 	result = np.correlate(x, x, mode='full')
-	return result[result.size/2:]
+	return result[int(result.size/2):]
 
+@jit
 def auto_correlation_map(self,max_lag=0.2):
 	# Auto correlation of each traces
 	# max_lag: maximum time lags to calculate autocorrelation [seconds]
@@ -23,6 +27,7 @@ def auto_correlation_map(self,max_lag=0.2):
 	return out
 
 
+@jit
 def corr_same_len(x,N,d):
 	# cross correlation (x & d)
 	# x, d: input arrays to correlate, same length
@@ -35,6 +40,7 @@ def corr_same_len(x,N,d):
 				rxx[n]+=x[l]*d[l+n]
 	return rxx 
 
+@jit
 def my_xcorr(x,N,d):
 	# cross correlation (x & d)
 	# x, d: input arrays to correlate
@@ -48,6 +54,7 @@ def my_xcorr(x,N,d):
 		d=np.pad(d,(0,L-len(d)),mode='constant')
 		return corr_same_len(x,N,d)
 
+@jit
 def stack_corr(strace,Da,maxlags):
 	# used in surface-consistant static correction
 	nx,nt=Da.shape
@@ -58,12 +65,12 @@ def stack_corr(strace,Da,maxlags):
 		Dout[ix,:]=np.pad(Da[ix,cmax:nt],(0,cmax),mode='constant')
 	return Dout
 
+@jit
 def spiking_decon(self,max_lag=0.2,mu=0.1):
 	# Spiking deconvolution
 	# max_lag: maximum time lags to calculate autocorrelation [seconds]
 	# mu=0.1: white noise in percent (recommended: 0.1 ~ 0.3 %)
 	# output: deconvolved SeismicTrace (scaled due to the impulse on the right-hand side)
-	import scipy.linalg
 	D=self.data
 	dt=pk.get_dt(self)
 	N=int(np.rint(max_lag/dt))
@@ -87,6 +94,7 @@ def spiking_decon(self,max_lag=0.2,mu=0.1):
 	out.add_log("spiking_decon: max_lag=%s mu=%s"%(max_lag,mu))
 	return out
 
+@jit
 def impulse(l,dtype=np.float64):
 	# return impulse array with size=l
 	# l: size of impulse array
@@ -95,6 +103,7 @@ def impulse(l,dtype=np.float64):
 	arr[0]=1
 	return arr
 
+@jit
 def scr_static(self,cmp_start,cmp_end,maxlags):
 	# Surface-consistent residual static correction
 	# cmp_start: first cmp number to apply the correction

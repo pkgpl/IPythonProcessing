@@ -1,4 +1,5 @@
 from numpy import *
+from numba import jit
 from matplotlib.pyplot import *
 import pickle
 #import pkprocess as pk
@@ -6,11 +7,12 @@ from . import pkbase as pk
 
 UNIT="m/s"
 
-from __init__ import CYTHON
-if CYTHON:
-	from .velan_cy import velan,nmo
-else:
-	from .velan import velan,nmo
+#from __init__ import CYTHON
+#if CYTHON:
+#	from .velan_cy import velan,nmo
+#else:
+#	from .velan import velan,nmo
+from .velan import velan,nmo
 
 class Picker:
 	def __init__(self,Da,dt,S,tau,v,cmpnum,h,max_stretch):
@@ -66,7 +68,8 @@ class Picker:
 		nt,ntr=D.shape
 		self.ntr=ntr
 		self.maxval=maxval
-		self.nmo_cmp_line=range(ntr)
+		#self.nmo_cmp_line=range(ntr)
+		self.nmo_cmp_line=list(range(ntr))
 		t=arange(nt)*dt
 		for itr in range(ntr):
 			trace=D[:,itr]
@@ -128,22 +131,24 @@ class Picker:
 		self.pvstack=delete(self.pvstack,i)
 
 
+@jit
 def vt_interp(vtlist,cmpn,cmp_num):
 	if cmpn in cmp_num:
-		return vtlist[np.argwhere(cmp_num==cmpn)]
+		return vtlist[np.nonzero(cmp_num==cmpn)[0][0]]
 	else:
 		cmp_left=cmp_num[cmp_num<cmpn].max()
 		cmp_right=cmp_num[cmp_num>cmpn].min()
 		wl=float(cmp_right-cmpn)/float(cmp_right-cmp_left)
 		wr=1.-wl
 
-		vleft,tleft=vtlist[np.argwhere(cmp_num==cmp_left)]
-		vright,tright=vtlist[np.argwhere(cmp_num==cmp_right)]
+		vleft, tleft =vtlist[np.nonzero(cmp_num==cmp_left )[0][0]]
+		vright,tright=vtlist[np.nonzero(cmp_num==cmp_right)[0][0]]
 		tnmo=np.unique(np.hstack((tleft,tright)))
 		vleft_interp=np.interp(tnmo,tleft,vleft)
 		vright_interp=np.interp(tnmo,tright,vright)
 		vnmo=vleft_interp*wl+vright_interp*wr
 		return vnmo,tnmo
+
 
 def vel_picking_nmo(su,vmin,dv,nv,cmp_start,cmp_end,cmp_step,max_stretch,R,L):
 	Dsort=su.data.T
@@ -154,7 +159,8 @@ def vel_picking_nmo(su,vmin,dv,nv,cmp_start,cmp_end,cmp_step,max_stretch,R,L):
 	#t=np.arange(ns)*dt
 	vmax=(nv-1)*dv+vmin
 	cmp_num=np.arange(cmp_start,cmp_end+cmp_step,cmp_step)
-	vtlist=range(len(cmp_num))
+	#vtlist=range(len(cmp_num))
+	vtlist=list(range(len(cmp_num)))
 
 	for icmp,cmpnum in enumerate(cmp_num):
 		su1=pk.window(su,'cdp',cmpnum)

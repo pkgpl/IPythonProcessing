@@ -1,5 +1,7 @@
 import numpy as np
+from numba import jit
 
+@jit
 def velan(D,dt,h,vmin,vmax,nv,R,L):
 	nt,nh=D.shape
 	v=np.linspace(vmin,vmax,nv)
@@ -22,7 +24,7 @@ def velan(D,dt,h,vmin,vmax,nv,R,L):
 				ts=time+ig*dt
 				for ih in range(nh):
 					iss=ts[ih]/dt+1
-					i1=np.floor(iss)
+					i1=int(np.floor(iss))
 					i2=i1+1
 					if i1>0 and i2<nt:
 						a=iss-i1
@@ -34,6 +36,7 @@ def velan(D,dt,h,vmin,vmax,nv,R,L):
 	return S,tau,v
 
 
+@jit
 def nmo(D,dt,h,tnmo,vnmo,max_stretch):
 	nt,nh=D.shape
 	mute_count=np.zeros(nt)
@@ -51,7 +54,7 @@ def nmo(D,dt,h,tnmo,vnmo,max_stretch):
 			if stretch < max_stretch/100.:
 				M[it]+=1
 				its=time/dt+1
-				it1=np.floor(time/dt+1)
+				it1=int(np.floor(time/dt+1))
 				it2=it1+1
 				a=its-it1
 				if it2 < nt:

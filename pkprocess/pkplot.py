@@ -228,7 +228,7 @@ def stacking_chart(self):
 	plt.figure(figsize=[10,10])
 	sx=pk.get_key(self,"sx")
 	gx=pk.get_key(self,"gx")
-	plt.plot(gx,sx,"ws")
+	plt.plot(gx,sx,"s")
 
 	xr=gx.max()-gx.min()
 	plt.xlim([gx.min()-0.1*xr,gx.max()+0.1*xr])
@@ -245,7 +245,7 @@ def stacking_chart(self):
 
 	plt.xlabel("x-axis locations",fontsize="large")
 	plt.ylabel("Shot number",fontsize="large")
-	plt.tick_params(axis='y',left="off",labelleft="off")
+	plt.tick_params(axis='y',left=False,labelleft=False)
 	plt.legend(["Receivers","Sources"],numpoints=1,fontsize="large")
 
 

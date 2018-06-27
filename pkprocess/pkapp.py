@@ -1,6 +1,10 @@
 import numpy as np
+from numba import jit
+import scipy.signal
+import scipy.interpolate
 from .pkbase import *
 
+@jit
 def triang(L):
 	# generate triangle
 	w=np.zeros(L)
@@ -20,6 +24,7 @@ def triang(L):
 			w[i]=2.-2.*n/(L+1.)
 	return w
 
+@jit
 def gain(self,tpow=0,epow=0,agc=False,agc_gate=0.5,norm="rms"):
 	# Apply gain function
 	# tpow=0: t**tpow
@@ -57,11 +62,11 @@ def gain(self,tpow=0,epow=0,agc=False,agc_gate=0.5,norm="rms"):
 	out.add_log("gain: tpow=%s epow=%s agc=%s agc_gate=%s norm=%s"%(tpow,epow,agc,agc_gate,norm))
 	return out
 
+@jit
 def bpfilter(self,cut_off):
 	# Band-pass filter
 	# cut_off: [min.freq, max.freq]: frequency range to pass
 	# output: band-pass filtered SeismicTrace
-	import scipy.signal
 	dt=get_dt(self)
 	nyq=0.5/dt
 	b,a=scipy.signal.butter(5,np.array(cut_off)/nyq,btype='band')
@@ -70,6 +75,7 @@ def bpfilter(self,cut_off):
 	out=SeismicTrace(self.header,trace,self.logs(),self.nmo_picks)
 	out.add_log("bpfilter: %s"%cut_off)
 	return out
+
 
 def stack(self):
 	# Stack NMO-corrected CMP gathers
@@ -96,6 +102,7 @@ def stack(self):
 	return out
 
 
+@jit
 def stolt_mig(self,v,dx):
 	# Stolt migration of CMP stacked data
 	# v: constant velocity
@@ -103,7 +110,6 @@ def stolt_mig(self,v,dx):
 	# output: migrated SeismicTrace
 
 	# python port of ezfkmig from http://www.biomecardio.com
-	import scipy.interpolate
 	Dstacked=self.data.T
 	nt,ncdp=Dstacked.shape
 
@@ -128,8 +134,29 @@ def stolt_mig(self,v,dx):
 	return out
 
 
+@jit
+def kirchhoff1(image,gather,times,isx,igx,dt,tdelay):
+	nx=image.shape[0]
+	nz=image.shape[1]
+	ntr=gather.shape[0]
+	nt=gather.shape[1]
+	#cdef int ix,iz,itr,it
+	#cdef double ts,tg,amp
+	for itr in range(ntr):
+		for ix in range(nx):
+			for iz in range(nz):
+				ts=times[isx,ix,iz]
+				tg=times[igx[itr],ix,iz]
+				it=int((ts+tg+tdelay)/dt)
+				if it<nt:
+					amp=gather[itr,it]
+					image[ix,iz]+=amp
+	return image
+
+
+@jit
 def kirchhoff(sd,h,times,tdelay):
-	import kirchhoff_cy
+	#import kirchhoff_cy
 	nx,nz=times[0].shape
 	image=np.zeros((nx,nz))
 	nt=get_ns(sd)
@@ -146,17 +173,20 @@ def kirchhoff(sd,h,times,tdelay):
 		gx=np.array(get_key(gather,"gx"))
 		isx=int(sx/h_in_meter)
 		igx=(gx/h_in_meter).astype(np.int32)
-		image=kirchhoff_cy.kirchhoff1(image,gather.data,times,isx,igx,dt,tdelay)
+		image=kirchhoff1(image,gather.data,times,isx,igx,dt,tdelay)
+		#image=kirchhoff_cy.kirchhoff1(image,gather.data,times,isx,igx,dt,tdelay)
 	return image
 
+@jit
 def moving_average2d(vel,r1,r2):
 	n1,n2=vel.shape
 	svel=np.empty_like(vel)
-	for i in xrange(n1):
-		for j in xrange(n2):
+	for i in range(n1):
+		for j in range(n2):
 			svel[i,j]=np.average(vel[max(0,i-r1):min(i+r1,n1),max(0,j-r2):min(j+r2,n2)])
 	return svel
 
+@jit
 def zdiff2(img):
 	dimg=np.zeros_like(img)
 	nz=img.shape[1]
@@ -164,6 +194,7 @@ def zdiff2(img):
 		dimg[:,iz]=img[:,iz-1]-2.*img[:,iz]+img[:,iz+1]
 	return dimg
 
+@jit
 def rmsvel(sd):
 	dt=get_dt(sd)
 	ns=get_ns(sd)
@@ -193,6 +224,7 @@ def rmsvel(sd):
 		vrms[it,:]=np.interp(cmprange,cmpnums,v1[it,:])
 	return vrms
 
+@jit
 def intervalvel(sd):
 	vrms=rmsvel(sd)
 	vmin=vrms.min()
