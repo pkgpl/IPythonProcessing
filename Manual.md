@@ -6,7 +6,6 @@
 - `sd`: SeismicData object
 - 헤더 정보는 모든 trace에서 추출
 - 헤더 keyword는 [SU Trace header 키워드](http://www.cwp.mines.edu/sututor/node149.html) 참고
-- Cython 모듈을 이용한 경우 `int, double` 등의 자료형이 맞아야 함
 
 ## 파일 입출력
 - SU 파일 읽기: `sd = read_su("input.su")`
